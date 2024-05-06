@@ -49,6 +49,6 @@ const assistantSchema = new mongoose.Schema({
   },
 });
 
-const Assistant = mongoose.model('Assistant', assistantSchema);
+const Assistant = mongoose.model('Assistant', assistantSchema, 'Assistant');
 
 module.exports = Assistant;
