@@ -1,6 +1,9 @@
 const Assistant = require('../models/assistantModel');
 
-exports.getAllAssistants = async (req, res) => {
+const catchAsync = require('../utils/catchAsync');
+const AppError = require('../utils/appError');
+
+exports.getAllAssistants = catchAsync(async (req, res, next) => {
   const docs = await Assistant.find();
 
   res.status(200).json({
@@ -10,10 +13,14 @@ exports.getAllAssistants = async (req, res) => {
       data: docs,
     },
   });
-};
+});
 
-exports.getAssistant = async (req, res) => {
+exports.getAssistant = catchAsync(async (req, res, next) => {
   const doc = await Assistant.findById(req.params.id);
+
+  if (!doc) {
+    return next(new AppError('Document not found', 404));
+  }
 
   res.status(200).json({
     status: 'sucess',
@@ -21,9 +28,9 @@ exports.getAssistant = async (req, res) => {
       doc,
     },
   });
-};
+});
 
-exports.createAssistant = async (req, res) => {
+exports.createAssistant = catchAsync(async (req, res, next) => {
   const doc = await Assistant.create(req.body);
 
   res.status(201).json({
@@ -32,10 +39,14 @@ exports.createAssistant = async (req, res) => {
       id: doc._id,
     },
   });
-};
+});
 
-exports.updateAssistant1 = async (req, res) => {
+exports.updateAssistant1 = catchAsync(async (req, res, next) => {
   const doc = await Assistant.findByIdAndUpdate(req.params.id, req.body);
+
+  if (!doc) {
+    return next(new AppError('Document not found', 404));
+  }
 
   res.status(200).json({
     status: 'sucess',
@@ -43,10 +54,14 @@ exports.updateAssistant1 = async (req, res) => {
       doc,
     },
   });
-};
+});
 
-exports.updateAssistant2 = async (req, res) => {
+exports.updateAssistant2 = catchAsync(async (req, res, next) => {
   const doc = await Assistant.findByIdAndUpdate(req.params.id, req.body);
+
+  if (!doc) {
+    return next(new AppError('Document not found', 404));
+  }
 
   res.status(200).json({
     status: 'sucess',
@@ -54,9 +69,9 @@ exports.updateAssistant2 = async (req, res) => {
       doc,
     },
   });
-};
+});
 
-exports.deleteAssistant = async (req, res) => {
+exports.deleteAssistant = catchAsync(async (req, res, next) => {
   const doc = await Assistant.findByIdAndDelete(req.params.id);
 
   if (!doc) {
@@ -67,4 +82,4 @@ exports.deleteAssistant = async (req, res) => {
     status: 'sucess',
     data: null,
   });
-};
+});

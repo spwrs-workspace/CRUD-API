@@ -1,6 +1,8 @@
 const express = require('express');
 
 const assistantRouter = require('./routes/assistantRoutes');
+const globalErrorHandler = require('./controllers/errorController');
+const AppError = require('./utils/appError');
 
 const app = express();
 
@@ -12,5 +14,11 @@ app.use((req, res, next) => {
 });
 
 app.use('/api/v1/assistant', assistantRouter);
+
+app.all('*', (req, res, next) => {
+  next(new AppError(`Can't find ${req.originalUrl}`, 404));
+});
+
+app.use(globalErrorHandler);
 
 module.exports = app;
