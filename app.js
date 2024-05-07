@@ -1,4 +1,5 @@
 const express = require('express');
+const morgan = require('morgan');
 
 const assistantRouter = require('./routes/assistantRoutes');
 const globalErrorHandler = require('./controllers/errorController');
@@ -8,10 +9,13 @@ const app = express();
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  console.log('I am here');
-  next();
-});
+// app.use((req, res, next) => {
+//   console.log('I am here');
+//   next();
+// });
+
+// logger middleware
+app.use(morgan('dev'));
 
 app.use('/api/v1/assistant', assistantRouter);
 
